@@ -1,0 +1,33 @@
+{
+    "name": "PlayerControls",
+    "maps": [
+        {
+            "name": "Gameplay",
+            "id": "beb3e9c8-e33b-494c-b7e6-a060e444f2b9",
+            "actions": [
+                {
+                    "name": "Dive",
+                    "type": "Button",
+                    "id": "a778aae3-4623-4bbe-b83a-42066453f343",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "74efd315-5194-471b-bde0-2b10e9839dd8",
+                    "path": "<Keyboard>/space",
+                    "interactions": "Press,Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dive",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
