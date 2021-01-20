@@ -16,12 +16,14 @@ public class Player : MonoBehaviour
     bool isDiving;
 
     float speed = 2;
-    [SerializeField]float stamina = 100;
+    float stamina = 100;
 
     Vignette vignette;
 
     void Awake()
     {
+        GameManager.Instance.startGame += () => this.enabled = true;
+
         cinemachine = Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineFramingTransposer>();
 
         animator = this.gameObject.GetComponent<Animator>();
@@ -47,6 +49,11 @@ public class Player : MonoBehaviour
         #endregion
     }
 
+    void Update()
+    {
+        UIManager.Instance.stamina = this.stamina;
+    }
+
     void FixedUpdate()
     {
         if (stamina <= 0)
@@ -57,7 +64,7 @@ public class Player : MonoBehaviour
         if (isDiving && stamina > 0)
         {
             animator.SetBool("IsDiving", true);
-            rb.velocity = Vector3.down * speed * 4;
+            rb.velocity = Vector3.down * speed * 4 * GameManager.Instance.GameSpeed;
             cinemachine.m_SoftZoneHeight = 0.35f;
             FOVIncreaser();
             VigniteIncreaser();
@@ -67,7 +74,7 @@ public class Player : MonoBehaviour
         if (!isDiving)
         {
             animator.SetBool("IsDiving", false);
-            rb.velocity = Vector3.down * speed;
+            rb.velocity = Vector3.down * speed * GameManager.Instance.GameSpeed; ;
             CinemachineNormaliser();
             FOVNormaliser();
             VigniteNormaliser();
