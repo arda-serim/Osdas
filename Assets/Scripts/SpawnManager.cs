@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class SpawnManager : MonoSingleton<SpawnManager>
 {
-    static Vector3 spawnPosition = new Vector3(0, -10, 0);
-    static float fakeTime = GameManager.Instance.GameSpeed;
+    Vector3 spawnPosition = new Vector3(0, -10, 0);
+    float timeGameStarted;
 
-    [SerializeField] static List<GameObject> prefabs;
-    static List<GameObject> obstacles;
+    [SerializeField] List<GameObject> prefabs;
+    [SerializeField]List<GameObject> obstacles = new List<GameObject>();
+
+    public override void Init()
+    {
+        GameManager.Instance.startGame += () => timeGameStarted = Time.time;
+    }
 
     private void Start()
     {
@@ -18,6 +23,9 @@ public class SpawnManager : MonoSingleton<SpawnManager>
 
     private void Update()
     {
+
+        Debug.Log(Time.time);
+
         UpdateObstacles();
         SpawnObstacle();
     }
@@ -40,7 +48,7 @@ public class SpawnManager : MonoSingleton<SpawnManager>
     /// </summary>
     private void UpdateObstacles()
     {
-        if (fakeTime > 0.5f && fakeTime < 1.5f)
+        if (Time.time - timeGameStarted > 0.5f && Time.time - timeGameStarted < 1.5f)
         {
             obstacles.Add(prefabs[0]);
             obstacles.Add(prefabs[1]);
@@ -49,7 +57,7 @@ public class SpawnManager : MonoSingleton<SpawnManager>
             prefabs.RemoveAt(0);
         }
 
-        else if (fakeTime > 1.5f && fakeTime < 3.0f)
+        else if (Time.time - timeGameStarted > 1.5f && Time.time - timeGameStarted < 3.0f)
         {
             obstacles.Add(prefabs[0]);
             obstacles.Add(prefabs[1]);
@@ -60,7 +68,7 @@ public class SpawnManager : MonoSingleton<SpawnManager>
             prefabs.RemoveAt(0);
         }
 
-        else if (fakeTime > 3.0)
+        else if (Time.time - timeGameStarted > 3.0)
         {
             obstacles.Add(prefabs[0]);
             obstacles.Add(prefabs[1]);
