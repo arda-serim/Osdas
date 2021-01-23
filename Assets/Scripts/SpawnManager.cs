@@ -42,7 +42,7 @@ public class SpawnManager : MonoSingleton<SpawnManager>
         if (Camera.main.transform.position.y - spawnPosition.y < 30)
         {
             Instantiate(obstacles[Random.Range(0, obstacles.Count)], spawnPosition, Quaternion.identity);
-            int spawnY = Random.Range(5, 15);
+            int spawnY = Random.Range(5, 10);
             spawnPosition.y -= spawnY;
         }
     }
