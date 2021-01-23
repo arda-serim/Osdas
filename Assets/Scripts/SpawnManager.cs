@@ -5,26 +5,30 @@ using UnityEngine;
 public class SpawnManager : MonoSingleton<SpawnManager>
 {
     Vector3 spawnPosition = new Vector3(0, -10, 0);
-    float timeGameStarted;
+
+    float fakeTime;
+    bool easySpawned;
+    bool mediumSpawned;
+    bool hardSpawned;
 
     [SerializeField] List<GameObject> prefabs;
     [SerializeField]List<GameObject> obstacles = new List<GameObject>();
 
-    public override void Init()
-    {
-        GameManager.Instance.startGame += () => timeGameStarted = Time.time;
-    }
-
     private void Start()
     {
+        GameManager.Instance.gameOver += () => this.enabled = false;
+
         obstacles.Add(prefabs[0]);
         prefabs.RemoveAt(0);
+
+        easySpawned = false;
+        mediumSpawned = false;
+        hardSpawned = false;
     }
 
     private void Update()
     {
-
-        Debug.Log(Time.time);
+        fakeTime = GameManager.Instance.GameSpeed - 1;
 
         UpdateObstacles();
         SpawnObstacle();
@@ -48,16 +52,18 @@ public class SpawnManager : MonoSingleton<SpawnManager>
     /// </summary>
     private void UpdateObstacles()
     {
-        if (Time.time - timeGameStarted > 0.5f && Time.time - timeGameStarted < 1.5f)
+        if (fakeTime > 0.5f && !easySpawned)
         {
             obstacles.Add(prefabs[0]);
             obstacles.Add(prefabs[1]);
 
             prefabs.RemoveAt(1);
             prefabs.RemoveAt(0);
+
+            easySpawned = true;
         }
 
-        else if (Time.time - timeGameStarted > 1.5f && Time.time - timeGameStarted < 3.0f)
+        else if (fakeTime > 1.5f && !mediumSpawned)
         {
             obstacles.Add(prefabs[0]);
             obstacles.Add(prefabs[1]);
@@ -66,15 +72,19 @@ public class SpawnManager : MonoSingleton<SpawnManager>
             prefabs.RemoveAt(2);
             prefabs.RemoveAt(1);
             prefabs.RemoveAt(0);
+
+            mediumSpawned = true;
         }
 
-        else if (Time.time - timeGameStarted > 3.0)
+        else if (fakeTime > 3.0 && !hardSpawned)
         {
             obstacles.Add(prefabs[0]);
             obstacles.Add(prefabs[1]);
 
             prefabs.RemoveAt(1);
             prefabs.RemoveAt(0);
+
+            hardSpawned = true;
         }
     }
 }

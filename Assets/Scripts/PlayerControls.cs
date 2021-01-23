@@ -19,7 +19,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
             ""id"": ""beb3e9c8-e33b-494c-b7e6-a060e444f2b9"",
             ""actions"": [
                 {
-                    ""name"": ""Dive"",
+                    ""name"": ""Button"",
                     ""type"": ""Button"",
                     ""id"": ""a778aae3-4623-4bbe-b83a-42066453f343"",
                     ""expectedControlType"": ""Button"",
@@ -32,10 +32,10 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""74efd315-5194-471b-bde0-2b10e9839dd8"",
                     ""path"": ""<Keyboard>/space"",
-                    ""interactions"": ""Press,Press"",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Dive"",
+                    ""action"": ""Button"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -46,7 +46,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
 }");
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
-        m_Gameplay_Dive = m_Gameplay.FindAction("Dive", throwIfNotFound: true);
+        m_Gameplay_Button = m_Gameplay.FindAction("Button", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -96,12 +96,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     // Gameplay
     private readonly InputActionMap m_Gameplay;
     private IGameplayActions m_GameplayActionsCallbackInterface;
-    private readonly InputAction m_Gameplay_Dive;
+    private readonly InputAction m_Gameplay_Button;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
         public GameplayActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Dive => m_Wrapper.m_Gameplay_Dive;
+        public InputAction @Button => m_Wrapper.m_Gameplay_Button;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -111,22 +111,22 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_GameplayActionsCallbackInterface != null)
             {
-                @Dive.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDive;
-                @Dive.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDive;
-                @Dive.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDive;
+                @Button.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnButton;
+                @Button.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnButton;
+                @Button.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnButton;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Dive.started += instance.OnDive;
-                @Dive.performed += instance.OnDive;
-                @Dive.canceled += instance.OnDive;
+                @Button.started += instance.OnButton;
+                @Button.performed += instance.OnButton;
+                @Button.canceled += instance.OnButton;
             }
         }
     }
     public GameplayActions @Gameplay => new GameplayActions(this);
     public interface IGameplayActions
     {
-        void OnDive(InputAction.CallbackContext context);
+        void OnButton(InputAction.CallbackContext context);
     }
 }

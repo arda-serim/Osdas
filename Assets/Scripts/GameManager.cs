@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.EnhancedTouch;
 
 public class GameManager : MonoSingleton<GameManager>
 {
@@ -12,38 +10,31 @@ public class GameManager : MonoSingleton<GameManager>
     float score;
 
     public Action startGame;
+    public Action gameOver;
 
-    public bool gameStarted = false;
+    public bool gameRunning = false;
 
     public override void Init()
     {
-        EnhancedTouchSupport.Enable();
+        startGame += () => gameRunning = true;
+        gameOver += () =>
+        {
+            gameRunning = false;
 
-        startGame += () => gameStarted = true;
+            if (PlayerPrefs.GetFloat("BestScore") < score)
+                PlayerPrefs.SetFloat("BestScore", score);
+        };
     }
 
     void FixedUpdate()
     {
-        if (gameStarted)
+        if (gameRunning)
         {
             GameSpeed += 0.001f;
 
             score += 1 * GameSpeed;
 
             UIManager.Instance.score = this.score;
-        }
-    }
-
-    void Update()
-    {
-        GameStarted();
-    }
-
-    void GameStarted()
-    {
-        if (UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches.Count > 0)
-        {
-            startGame();
         }
     }
 }

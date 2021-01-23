@@ -572,7 +572,7 @@ GameObject:
   - component: {fileID: 838322085835851310}
   m_Layer: 0
   m_Name: Osdas
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -586,7 +586,7 @@ Transform:
   m_GameObject: {fileID: 6627953315899999751}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 1.8, z: 0}
-  m_LocalScale: {x: 100, y: 100.00003, z: 100.00003}
+  m_LocalScale: {x: 75, y: 75, z: 75}
   m_Children:
   - {fileID: 6534505912134450059}
   m_Father: {fileID: 0}
@@ -673,12 +673,12 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6627953315899999751}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.005307169
-  m_Height: 0.02074202
+  m_Radius: 0.0044552833
+  m_Height: 0.020486172
   m_Direction: 2
-  m_Center: {x: -0.000000002980232, y: -0.00061811093, z: 0.010069933}
+  m_Center: {x: -0.00005869945, y: -0.00094109064, z: -0.007874606}
 --- !u!54 &6517575665986712073
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -721,7 +721,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6627953315899999751}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d412f97dd85825942bdbbffee5d7894c, type: 3}
   m_Name: 

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoSingleton<UIManager>
 {
-    Button diveButton;
+    Button button;
     TextMeshProUGUI scoreText;
     Image staminaBar;
 
@@ -15,21 +15,25 @@ public class UIManager : MonoSingleton<UIManager>
 
     public override void Init()
     {
-        diveButton = GameObject.Find("DiveButton").GetComponent<Button>();
+        button = GameObject.Find("Button").GetComponent<Button>();
         scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         staminaBar = GameObject.Find("StaminaBar").GetComponent<Image>();
 
-        diveButton.gameObject.SetActive(false);
         staminaBar.gameObject.SetActive(false);
 
-        //scoreText.text = PlayerPrefs.GetInt(bestScore);
+        scoreText.text = ((int)PlayerPrefs.GetFloat("BestScore")).ToString();
 
         GameManager.Instance.startGame += this.StartGame;
+        GameManager.Instance.gameOver += () =>
+        {
+            staminaBar.gameObject.SetActive(false);
+            button.gameObject.SetActive(false);
+        };
     }
 
     void Update()
     {
-        if (GameManager.Instance.gameStarted)
+        if (GameManager.Instance.gameRunning)
         {
             scoreText.text = ((int)score).ToString();
             staminaBar.fillAmount = stamina / 100;
@@ -38,7 +42,6 @@ public class UIManager : MonoSingleton<UIManager>
 
     void StartGame()
     {
-        diveButton.gameObject.SetActive(true);
         staminaBar.gameObject.SetActive(true);
     }
 }

@@ -22,7 +22,10 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
-        GameManager.Instance.startGame += () => this.enabled = true;
+        playerControls = new PlayerControls();
+        playerControls.Enable();
+
+        playerControls.Gameplay.Button.canceled += ctx => GameManager.Instance.startGame();
 
         cinemachine = Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineFramingTransposer>();
 
@@ -33,20 +36,21 @@ public class Player : MonoBehaviour
 
         GameObject.Find("Global Volume").GetComponent<Volume>().profile.TryGet(out vignette);
 
-        #region Inputs
-        playerControls = new PlayerControls();
-
-        playerControls.Enable();
-
-        playerControls.Gameplay.Dive.performed += ctx => 
+        GameManager.Instance.startGame += () =>
         {
-            isDiving = true;
+            this.enabled = true;
+
+            playerControls.Gameplay.Button.performed += ctx => isDiving = true;
+            playerControls.Gameplay.Button.canceled += ctx =>isDiving = false;
         };
-        playerControls.Gameplay.Dive.canceled += ctx =>
+
+        GameManager.Instance.gameOver += () => 
         {
-            isDiving = false;
+            //Execute osdas
+
+            rb.velocity = Vector3.zero;
+            this.enabled = false;
         };
-        #endregion
     }
 
     void Update()
@@ -140,6 +144,14 @@ public class Player : MonoBehaviour
         if (stamina < 100)
         {
             stamina += 1f;
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Obstacle"))
+        {
+            GameManager.Instance.gameOver();
         }
     }
 }
