@@ -6,9 +6,25 @@
             "id": "beb3e9c8-e33b-494c-b7e6-a060e444f2b9",
             "actions": [
                 {
-                    "name": "Button",
+                    "name": "StartGame",
                     "type": "Button",
                     "id": "a778aae3-4623-4bbe-b83a-42066453f343",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Dive",
+                    "type": "Button",
+                    "id": "c30f72be-1082-4aab-b727-ee90e71d107b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Restart",
+                    "type": "Button",
+                    "id": "a6b66f7c-69f7-42ad-b22d-d54e18869c06",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -18,11 +34,33 @@
                 {
                     "name": "",
                     "id": "74efd315-5194-471b-bde0-2b10e9839dd8",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StartGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "46c7d9c5-5dd7-4f86-8d68-cf87d3fde647",
                     "path": "<Keyboard>/space",
                     "interactions": "Press",
                     "processors": "",
                     "groups": "",
-                    "action": "Button",
+                    "action": "Dive",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d391dc9e-b06b-4573-ba4d-83f7b52dcb54",
+                    "path": "<Keyboard>/r",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Restart",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

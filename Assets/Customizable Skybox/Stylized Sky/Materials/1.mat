@@ -9,8 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: 1
   m_Shader: {fileID: 4800000, guid: eb3c6fb598ded4c71b8968e1c40a3b4d, type: 3}
-  m_ShaderKeywords: _DEBUG_FINAL _HALOBLENDMODE_ADD _HORIZONLINEBLENDMODE_ADD _SUNHALOBLENDMODE_ADD
-    _VIEW_FINAL _VIEW_SKY _VIEW_SKYBACKGROUND
+  m_ShaderKeywords: 
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -21,37 +20,20 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Floats:
-    - _DEBUG: 0
-    - _Float0: 40
-    - _Float1: 0.23
-    - _Float2: 5
-    - _HaloBlendMode: 0
-    - _HorizonLineBlendMode: 0
-    - _HorizonLineContribution: 0.3
-    - _HorizonLineExponent: 5.75
-    - _SkyGradientExponent: 0.1
-    - _Skyexp: 10.99
+    - _HorizonLineContribution: 0.177
+    - _HorizonLineExponent: 4
+    - _SkyGradientExponent: 2.5
     - _SunDiscContribution: 1
-    - _SunDiscExponent: 500000
-    - _SunDiscExponentSize: 200000
-    - _SunDiscMultiplier: 100000
-    - _SunDiscMultiplierSharpness: 1000
-    - _SunHaloBlendMode: 0
+    - _SunDiscExponent: 125000
+    - _SunDiscMultiplier: 25
     - _SunHaloContribution: 0.5
-    - _SunHaloExponent: 500
-    - _Sunexp: 2000
-    - _View: 0
+    - _SunHaloExponent: 125
+    - _Title: 0
     - __dirty: 0
-    - _sunExponent: 500
     m_Colors:
-    - _Color0: {r: 0.6321383, g: 1, b: 0.2971698, a: 1}
-    - _Horizon: {r: 1, g: 0, b: 0.7466021, a: 1}
-    - _HorizonLineColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Sky: {r: 1, g: 0, b: 0, a: 1}
-    - _SkyGradientBottom: {r: 0.4676485, g: 0.8453282, b: 0.8773585, a: 1}
-    - _SkyGradientTop: {r: 0, g: 0.5633725, b: 0.8113207, a: 1}
-    - _SubHorizonColor: {r: 0, g: 0, b: 0, a: 1}
+    - _HorizonLineColor: {r: 0.7921569, g: 0.870793, b: 0.90588236, a: 1}
+    - _SkyGradientBottom: {r: 0.76470596, g: 0.81568635, b: 0.85098046, a: 1}
+    - _SkyGradientTop: {r: 0.17254902, g: 0.5686275, b: 0.69411767, a: 1}
     - _SunDiscColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SunHaloColor: {r: 0.9117647, g: 0.8648356, b: 0.7709775, a: 1}
-    - _Sunhalocolor: {r: 1, g: 0, b: 0, a: 0}
+    - _SunHaloColor: {r: 0.8980392, g: 0.83331764, b: 0.6666667, a: 1}
   m_BuildTextureStacks: []

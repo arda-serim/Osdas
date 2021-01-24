@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Cinemachine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -14,41 +15,42 @@ public class Player : MonoBehaviour
     CinemachineFramingTransposer cinemachine;
 
     bool isDiving;
+    bool staminaController;
 
-    float speed = 2;
+    float speed = 4;
     float stamina = 100;
 
     Vignette vignette;
 
+    ParticleSystem particleSystem;
+
     void Awake()
     {
-        playerControls = new PlayerControls();
-        playerControls.Enable();
-
-        playerControls.Gameplay.Button.canceled += ctx => GameManager.Instance.startGame();
-
+        //Assigning objects or components
         cinemachine = Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineFramingTransposer>();
 
         animator = this.gameObject.GetComponent<Animator>();
         rb = this.gameObject.GetComponent<Rigidbody>();
 
         isDiving = false;
+        staminaController = false;
 
         GameObject.Find("Global Volume").GetComponent<Volume>().profile.TryGet(out vignette);
 
+        particleSystem = GameObject.Find("Particle System").GetComponent<ParticleSystem>();
+
+        //Assigning actions
         GameManager.Instance.startGame += () =>
         {
             this.enabled = true;
-
-            playerControls.Gameplay.Button.performed += ctx => isDiving = true;
-            playerControls.Gameplay.Button.canceled += ctx =>isDiving = false;
         };
 
         GameManager.Instance.gameOver += () => 
         {
-            //Execute osdas
+            particleSystem.Play();
 
             rb.velocity = Vector3.zero;
+            this.gameObject.GetComponent<SkinnedMeshRenderer>().enabled = false;
             this.enabled = false;
         };
     }
@@ -56,6 +58,24 @@ public class Player : MonoBehaviour
     void Update()
     {
         UIManager.Instance.stamina = this.stamina;
+
+        if (GameManager.Instance.gameRunning && Input.touchCount > 0 && !staminaController)
+        {
+            isDiving = true;
+        }
+        else
+        {
+            isDiving = false;
+        }
+
+        if (stamina > 30)
+        {
+            staminaController = false;
+        }
+        else if (stamina <= 0)
+        {
+            staminaController = true;
+        }
     }
 
     void FixedUpdate()
@@ -68,7 +88,7 @@ public class Player : MonoBehaviour
         if (isDiving && stamina > 0)
         {
             animator.SetBool("IsDiving", true);
-            rb.velocity = Vector3.down * speed * 4 * GameManager.Instance.GameSpeed;
+            rb.velocity = Vector3.down * speed * 2 * GameManager.Instance.GameSpeed;
             cinemachine.m_SoftZoneHeight = 0.35f;
             FOVIncreaser();
             VigniteIncreaser();
@@ -86,6 +106,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    #region Dive things
+
+    /// <summary>
+    /// Makes cinemachine's softzone normal
+    /// </summary>
     void CinemachineNormaliser()
     {
         if (cinemachine.m_SoftZoneHeight > 0)
@@ -95,6 +120,9 @@ public class Player : MonoBehaviour
 
     }
     
+    /// <summary>
+    /// Increases FOV if player dives
+    /// </summary>
     void FOVIncreaser()
     {
         if (Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens
@@ -105,6 +133,9 @@ public class Player : MonoBehaviour
         }
     }    
     
+    /// <summary>
+    /// Decrease FOV if player cancels diving
+    /// </summary>
     void FOVNormaliser()
     {
         if (Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens
@@ -115,6 +146,9 @@ public class Player : MonoBehaviour
         }
     }    
     
+    /// <summary>
+    /// Make vignette effect on the camera if player dives
+    /// </summary>
     void VigniteIncreaser()
     {
         if (vignette.intensity.value < 0.15)
@@ -123,6 +157,9 @@ public class Player : MonoBehaviour
         }
     }   
     
+    /// <summary>
+    /// Normalise vignette effect on the camera if player cancels diving
+    /// </summary>
     void VigniteNormaliser()
     {
         if (vignette.intensity.value > 0)
@@ -131,6 +168,9 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Reduces stamina if player dives
+    /// </summary>
     void StaminaReducer()
     {
         if (stamina > 0)
@@ -139,6 +179,9 @@ public class Player : MonoBehaviour
         };
     }
 
+    /// <summary>
+    /// Increase stamina if player is not diving
+    /// </summary>
     void StaminaNormaliser()
     {
         if (stamina < 100)
@@ -147,9 +190,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    #endregion
+
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Obstacle"))
+        if (other.gameObject.CompareTag("Obstacle") && GameManager.Instance.gameRunning)
         {
             GameManager.Instance.gameOver();
         }

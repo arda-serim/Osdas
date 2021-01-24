@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: 6
+  m_Name: 5
   m_Shader: {fileID: 4800000, guid: eb3c6fb598ded4c71b8968e1c40a3b4d, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 0
@@ -22,18 +22,18 @@ Material:
     m_Floats:
     - _HorizonLineContribution: 0
     - _HorizonLineExponent: 1
-    - _SkyGradientExponent: 3
+    - _SkyGradientExponent: 4
     - _SunDiscContribution: 1
-    - _SunDiscExponent: 100000
-    - _SunDiscMultiplier: 1000
+    - _SunDiscExponent: 25000
+    - _SunDiscMultiplier: 4
     - _SunHaloContribution: 0.5
-    - _SunHaloExponent: 250
+    - _SunHaloExponent: 50
     - _Title: 0
     - __dirty: 0
     m_Colors:
     - _HorizonLineColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SkyGradientBottom: {r: 0.7058823, g: 1, b: 0.939148, a: 1}
-    - _SkyGradientTop: {r: 0.043137237, g: 0.7294118, b: 0.7411765, a: 1}
-    - _SunDiscColor: {r: 1, g: 0.9953347, b: 0.8308824, a: 1}
-    - _SunHaloColor: {r: 1, g: 0.91379315, b: 0.63235295, a: 1}
+    - _SkyGradientBottom: {r: 0.56078434, g: 0.61960787, b: 0.7019608, a: 1}
+    - _SkyGradientTop: {r: 0.25490198, g: 0.4039216, b: 0.5568628, a: 1}
+    - _SunDiscColor: {r: 1, g: 0.99239343, b: 0.8897059, a: 1}
+    - _SunHaloColor: {r: 1, g: 0.8411765, b: 0.60294116, a: 1}
   m_BuildTextureStacks: []

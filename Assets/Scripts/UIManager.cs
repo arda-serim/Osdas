@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.InputSystem.OnScreen;
 
 public class UIManager : MonoSingleton<UIManager>
 {
-    Button button;
+    Button startGameButton;
+    Button restartGameButton;
     TextMeshProUGUI scoreText;
     Image staminaBar;
 
@@ -15,7 +17,8 @@ public class UIManager : MonoSingleton<UIManager>
 
     public override void Init()
     {
-        button = GameObject.Find("Button").GetComponent<Button>();
+        startGameButton = GameObject.Find("StartGameButton").GetComponent<Button>();
+        restartGameButton = GameObject.Find("RestartGameButton").GetComponent<Button>();
         scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         staminaBar = GameObject.Find("StaminaBar").GetComponent<Image>();
 
@@ -23,12 +26,11 @@ public class UIManager : MonoSingleton<UIManager>
 
         scoreText.text = ((int)PlayerPrefs.GetFloat("BestScore")).ToString();
 
-        GameManager.Instance.startGame += this.StartGame;
-        GameManager.Instance.gameOver += () =>
-        {
-            staminaBar.gameObject.SetActive(false);
-            button.gameObject.SetActive(false);
-        };
+        startGameButton.gameObject.SetActive(true);
+        restartGameButton.gameObject.SetActive(false);
+
+        GameManager.Instance.startGame += asd;
+        GameManager.Instance.gameOver += dsa;
     }
 
     void Update()
@@ -40,8 +42,21 @@ public class UIManager : MonoSingleton<UIManager>
         }
     }
 
-    void StartGame()
+    void asd()
     {
         staminaBar.gameObject.SetActive(true);
+
+        startGameButton.gameObject.SetActive(false);
+        restartGameButton.gameObject.SetActive(false);
+    }
+
+    void dsa()
+    {
+        staminaBar.gameObject.SetActive(false);
+
+        scoreText.gameObject.GetComponent<Animation>().Play();
+
+        startGameButton.gameObject.SetActive(false);
+        restartGameButton.gameObject.SetActive(true);
     }
 }

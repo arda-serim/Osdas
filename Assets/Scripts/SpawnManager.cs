@@ -11,6 +11,8 @@ public class SpawnManager : MonoSingleton<SpawnManager>
     bool mediumSpawned;
     bool hardSpawned;
 
+    GameObject obstacleToSpawn;
+
     [SerializeField] List<GameObject> prefabs;
     [SerializeField]List<GameObject> obstacles = new List<GameObject>();
 
@@ -41,7 +43,9 @@ public class SpawnManager : MonoSingleton<SpawnManager>
     {
         if (Camera.main.transform.position.y - spawnPosition.y < 30)
         {
-            Instantiate(obstacles[Random.Range(0, obstacles.Count)], spawnPosition, Quaternion.identity);
+            obstacleToSpawn = obstacles[Random.Range(0, obstacles.Count)];
+            GameObject go = Instantiate(obstacleToSpawn, spawnPosition, Quaternion.identity);
+            go.GetComponent<Animator>().Play(0, 0, Random.Range(0f, 1f));
             int spawnY = Random.Range(5, 10);
             spawnPosition.y -= spawnY;
         }
@@ -52,7 +56,7 @@ public class SpawnManager : MonoSingleton<SpawnManager>
     /// </summary>
     private void UpdateObstacles()
     {
-        if (fakeTime > 0.5f && !easySpawned)
+        if (fakeTime > 0.3f && !easySpawned)
         {
             obstacles.Add(prefabs[0]);
             obstacles.Add(prefabs[1]);
