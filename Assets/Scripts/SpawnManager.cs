@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class SpawnManager : MonoSingleton<SpawnManager>
 {
+    int spawnY;
+    int spawnYMin;
+    int spawnYMax;
+
     Vector3 spawnPosition = new Vector3(0, -10, 0);
 
     float fakeTime;
@@ -22,6 +26,8 @@ public class SpawnManager : MonoSingleton<SpawnManager>
 
         obstacles.Add(prefabs[0]);
         prefabs.RemoveAt(0);
+        spawnYMin = 7;
+        spawnYMax = 9;
 
         easySpawned = false;
         mediumSpawned = false;
@@ -46,7 +52,7 @@ public class SpawnManager : MonoSingleton<SpawnManager>
             obstacleToSpawn = obstacles[Random.Range(0, obstacles.Count)];
             GameObject go = Instantiate(obstacleToSpawn, spawnPosition, Quaternion.identity);
             go.GetComponent<Animator>().Play(0, 0, Random.Range(0f, 1f));
-            int spawnY = Random.Range(5, 10);
+            spawnY = Random.Range(spawnYMin, spawnYMax);
             spawnPosition.y -= spawnY;
         }
     }
@@ -56,7 +62,7 @@ public class SpawnManager : MonoSingleton<SpawnManager>
     /// </summary>
     private void UpdateObstacles()
     {
-        if (fakeTime > 0.3f && !easySpawned)
+        if (fakeTime > 0.22f && !easySpawned)
         {
             obstacles.Add(prefabs[0]);
             obstacles.Add(prefabs[1]);
@@ -64,10 +70,13 @@ public class SpawnManager : MonoSingleton<SpawnManager>
             prefabs.RemoveAt(1);
             prefabs.RemoveAt(0);
 
+            spawnYMin = 9;
+            spawnYMax = 11;
+
             easySpawned = true;
         }
 
-        else if (fakeTime > 1.5f && !mediumSpawned)
+        else if (fakeTime > 0.7f && !mediumSpawned)
         {
             obstacles.Add(prefabs[0]);
             obstacles.Add(prefabs[1]);
@@ -77,16 +86,22 @@ public class SpawnManager : MonoSingleton<SpawnManager>
             prefabs.RemoveAt(1);
             prefabs.RemoveAt(0);
 
+            spawnYMin = 10;
+            spawnYMax = 15;
+
             mediumSpawned = true;
         }
 
-        else if (fakeTime > 3.0 && !hardSpawned)
+        else if (fakeTime > 1.3f && !hardSpawned)
         {
             obstacles.Add(prefabs[0]);
             obstacles.Add(prefabs[1]);
 
             prefabs.RemoveAt(1);
             prefabs.RemoveAt(0);
+
+            spawnYMin = 13;
+            spawnYMax = 20;
 
             hardSpawned = true;
         }

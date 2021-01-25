@@ -10,9 +10,15 @@ public class UIManager : MonoSingleton<UIManager>
     Button startGameButton;
     Button restartGameButton;
     TextMeshProUGUI scoreText;
+    TextMeshProUGUI bestScore;
     Image staminaBar;
+    Button soundButton;
+    Image soundOn;
+    Image soundOff;
 
-    public float  score;
+    AudioListener audioListener;
+
+    public int score;
     public float stamina;
 
     public override void Init()
@@ -20,43 +26,65 @@ public class UIManager : MonoSingleton<UIManager>
         startGameButton = GameObject.Find("StartGameButton").GetComponent<Button>();
         restartGameButton = GameObject.Find("RestartGameButton").GetComponent<Button>();
         scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
+        bestScore = GameObject.Find("BestScore").GetComponent<TextMeshProUGUI>();
         staminaBar = GameObject.Find("StaminaBar").GetComponent<Image>();
+        soundButton = GameObject.Find("SoundButton").GetComponent<Button>();
+        soundOn = GameObject.Find("SoundOn").GetComponent<Image>();
+        soundOff = GameObject.Find("SoundOff").GetComponent<Image>();
+        audioListener = Camera.main.gameObject.GetComponent<AudioListener>();
 
         staminaBar.gameObject.SetActive(false);
 
-        scoreText.text = ((int)PlayerPrefs.GetFloat("BestScore")).ToString();
+        scoreText.text = PlayerPrefs.GetInt("BestScore").ToString();
 
         startGameButton.gameObject.SetActive(true);
         restartGameButton.gameObject.SetActive(false);
 
-        GameManager.Instance.startGame += asd;
-        GameManager.Instance.gameOver += dsa;
+        GameManager.Instance.startGame += () =>
+        {
+            staminaBar.gameObject.SetActive(true);
+
+            scoreText.gameObject.GetComponent<Animation>().Play("ScoreStartGame");
+
+            startGameButton.gameObject.SetActive(false);
+            restartGameButton.gameObject.SetActive(false);
+            soundButton.gameObject.SetActive(false);
+        };
+        GameManager.Instance.gameOver += () =>
+        {
+            staminaBar.gameObject.SetActive(false);
+
+            scoreText.text = score.ToString();
+            bestScore.text = PlayerPrefs.GetInt("BestScore").ToString();
+            scoreText.gameObject.GetComponent<Animation>().Play("ScoreGameOver");
+
+            startGameButton.gameObject.SetActive(false);
+            restartGameButton.gameObject.SetActive(true);
+        };
+
+        ControlSoundButtons();
     }
 
     void Update()
     {
         if (GameManager.Instance.gameRunning)
         {
-            scoreText.text = ((int)score).ToString();
+            scoreText.text = score.ToString();
             staminaBar.fillAmount = stamina / 100;
         }
     }
 
-    void asd()
+    public void ControlSoundButtons()
     {
-        staminaBar.gameObject.SetActive(true);
-
-        startGameButton.gameObject.SetActive(false);
-        restartGameButton.gameObject.SetActive(false);
-    }
-
-    void dsa()
-    {
-        staminaBar.gameObject.SetActive(false);
-
-        scoreText.gameObject.GetComponent<Animation>().Play();
-
-        startGameButton.gameObject.SetActive(false);
-        restartGameButton.gameObject.SetActive(true);
+        if (audioListener.enabled)
+        {
+            soundOn.enabled = true;
+            soundOff.enabled = false;
+        }
+        else
+        {
+            soundOn.enabled = false;
+            soundOff.enabled = true;
+        }
     }
 }

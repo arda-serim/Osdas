@@ -21,6 +21,8 @@ public class GameManager : MonoSingleton<GameManager>
 
     [SerializeField]List<Material> skyboxes;
 
+    AudioListener audioListener;
+
     public override void Init()
     {
         GameObject.Find("Global Volume").GetComponent<Volume>().profile.TryGet(out depthOfField);
@@ -28,26 +30,29 @@ public class GameManager : MonoSingleton<GameManager>
         startGame += () => gameRunning = true;
         gameOver += () =>
         {
-            gameRunning = false;
-
-            if (PlayerPrefs.GetFloat("BestScore") < score)
-                PlayerPrefs.SetFloat("BestScore", score);
+            if (PlayerPrefs.GetInt("BestScore") < score)
+                PlayerPrefs.SetInt("BestScore", (int)score);
 
             depthOfField.mode.overrideState = true;
+
+            gameRunning = false;
         };
 
         RenderSettings.skybox = skyboxes[UnityEngine.Random.Range(0, skyboxes.Count)];
+
+        audioListener = Camera.main.GetComponent<AudioListener>();
+        audioListener.enabled = PlayerPrefs.GetInt("AudioListener", 1) == 1 ? true : false;
     }
 
     void FixedUpdate()
     {
         if (gameRunning)
         {
-            GameSpeed += 0.001f;
+            GameSpeed += 0.0007f;
 
             score += 1 * GameSpeed;
 
-            UIManager.Instance.score = this.score;
+            UIManager.Instance.score = (int)this.score;
         }
     }
 
@@ -59,5 +64,12 @@ public class GameManager : MonoSingleton<GameManager>
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void SoundOnOff()
+    {
+        audioListener.enabled = !audioListener.enabled;
+        PlayerPrefs.SetInt("AudioListener", audioListener.enabled ? 1 : 0);
+        UIManager.Instance.ControlSoundButtons();
     }
 }

@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
 
     Vignette vignette;
 
-    ParticleSystem particleSystem;
+    new ParticleSystem particleSystem;
 
     void Awake()
     {
@@ -48,6 +48,7 @@ public class Player : MonoBehaviour
         GameManager.Instance.gameOver += () => 
         {
             particleSystem.Play();
+            this.gameObject.GetComponent<AudioSource>().Play();
 
             rb.velocity = Vector3.zero;
             this.gameObject.GetComponent<SkinnedMeshRenderer>().enabled = false;
@@ -129,7 +130,7 @@ public class Player : MonoBehaviour
             .FieldOfView < 70)
         {
             Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens
-            .FieldOfView += 0.35f;
+            .FieldOfView += 0.6f;
         }
     }    
     
