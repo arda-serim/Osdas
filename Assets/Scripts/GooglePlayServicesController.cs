@@ -6,13 +6,26 @@ using GooglePlayGames;
 public class GooglePlayServicesController : MonoBehaviour
 {
     bool success;
+    static GooglePlayServicesController playerInstance;
     void Start()
     {
-        PlayGamesPlatform.Activate();
-        LogIn();
+        DontDestroyOnLoad(this);
+
+        if (playerInstance == null)
+        {
+            playerInstance = this;
+
+            PlayGamesPlatform.Activate();
+            LogIn();
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
     }
     public static void LogIn()
     {
+        Debug.Log("Hi");
         Social.localUser.Authenticate(success => { });
     }
 

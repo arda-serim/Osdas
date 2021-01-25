@@ -21,8 +21,6 @@ public class GameManager : MonoSingleton<GameManager>
 
     [SerializeField]List<Material> skyboxes;
 
-    AudioListener audioListener;
-
     public override void Init()
     {
         GameObject.Find("Global Volume").GetComponent<Volume>().profile.TryGet(out depthOfField);
@@ -42,8 +40,7 @@ public class GameManager : MonoSingleton<GameManager>
 
         RenderSettings.skybox = skyboxes[UnityEngine.Random.Range(0, skyboxes.Count)];
 
-        audioListener = Camera.main.GetComponent<AudioListener>();
-        audioListener.enabled = PlayerPrefs.GetInt("AudioListener", 1) == 1 ? true : false;
+        AudioListener.volume = PlayerPrefs.GetFloat("AudioListener", 1);
     }
 
     void FixedUpdate()
@@ -70,8 +67,8 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void SoundOnOff()
     {
-        audioListener.enabled = !audioListener.enabled;
-        PlayerPrefs.SetInt("AudioListener", audioListener.enabled ? 1 : 0);
+        AudioListener.volume = AudioListener.volume == 1 ? 0 : 1;
+        PlayerPrefs.SetFloat("AudioListener", AudioListener.volume);
         UIManager.Instance.ControlSoundButtons();
     }
 }
