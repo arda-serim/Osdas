@@ -33,6 +33,8 @@ public class GameManager : MonoSingleton<GameManager>
             if (PlayerPrefs.GetInt("BestScore") < score)
                 PlayerPrefs.SetInt("BestScore", (int)score);
 
+            GooglePlayServicesController.AddScoreToLeaderboard(PlayerPrefs.GetInt("BestScore"), GPGSIds.leaderboard_best_score);
+
             depthOfField.mode.overrideState = true;
 
             gameRunning = false;

@@ -15,6 +15,7 @@ public class UIManager : MonoSingleton<UIManager>
     Button soundButton;
     Image soundOn;
     Image soundOff;
+    Image leaderboard;
 
     AudioListener audioListener;
 
@@ -32,6 +33,7 @@ public class UIManager : MonoSingleton<UIManager>
         soundOn = GameObject.Find("SoundOn").GetComponent<Image>();
         soundOff = GameObject.Find("SoundOff").GetComponent<Image>();
         audioListener = Camera.main.gameObject.GetComponent<AudioListener>();
+        leaderboard = GameObject.Find("Leaderboard").GetComponent<Image>();
 
         staminaBar.gameObject.SetActive(false);
 
@@ -49,6 +51,7 @@ public class UIManager : MonoSingleton<UIManager>
             startGameButton.gameObject.SetActive(false);
             restartGameButton.gameObject.SetActive(false);
             soundButton.gameObject.SetActive(false);
+            leaderboard.gameObject.SetActive(false);
         };
         GameManager.Instance.gameOver += () =>
         {
