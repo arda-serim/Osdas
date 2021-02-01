@@ -25,13 +25,19 @@ public class GooglePlayServicesController : MonoBehaviour
     }
     public static void LogIn()
     {
-        Debug.Log("Hi");
         Social.localUser.Authenticate(success => { });
     }
 
     public static void ShowLeaderboard()
     {
-        Social.ShowLeaderboardUI();
+        if (Social.localUser.authenticated)
+        {
+            Social.ShowLeaderboardUI();
+        }
+        else
+        {
+            LogIn();
+        }
     }
 
     public static void AddScoreToLeaderboard(int score, string leaderboard)
